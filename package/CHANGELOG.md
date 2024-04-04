@@ -1,4 +1,9 @@
 <details>
+<summary>Changelog 1.0.2</summary>
+
+- Added health, speed and damage modifiers.
+</details>
+<details>
 <summary>Changelog 1.0.1</summary>
 
 - Added "Visuals Only" toggle.

@@ -1,6 +1,7 @@
 # What does this mod do?
 - This mod allows you to enable and disable full radiance through Configgy.
 - You can also make enemies only visually radiant.
+- Aditional health, speed and damage modifiers can be applied.
 - Although you don't need to enable cheats beforehand, they will be enabled the moment you turn radiance on, even if the Cheats Menu is hidden.
 
 # Manual Installation

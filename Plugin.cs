@@ -11,7 +11,7 @@ namespace RadianceEnabler;
 public class Plugin : BaseUnityPlugin {	
   public const string PLUGIN_GUID = "com.earthlingOnFire.RadianceEnabler";
   public const string PLUGIN_NAME = "Radiance Enabler";
-  public const string PLUGIN_VERSION = "1.0.1";
+  public const string PLUGIN_VERSION = "1.0.2";
 
   private ConfigBuilder config;
 
@@ -26,7 +26,7 @@ public class Plugin : BaseUnityPlugin {
 }
 
 public static class RadianceConfig {
-  [Configgable("", "Force Radiance")]
+  [Configgable("", "Enable Radiance")]
   public static ConfigToggle radianceToggle = new ConfigToggle(false);
 
   [Configgable("", "Visuals Only")]
@@ -34,11 +34,23 @@ public static class RadianceConfig {
   
   [Configgable("", "Radiance Tier")]
   public static float radianceTier = 1f;
+
+  [Configgable("", "Health Modifier")]
+  public static float healthModifier = 1f;
+
+  [Configgable("", "Speed Modifier")]
+  public static float speedModifier = 1f;
+
+  [Configgable("", "Damage Modifier")]
+  public static float damageModifier = 1f;
 }
 
 [HarmonyPatch]
 public static class Patches {
   private static bool currentVisualsOnly;
+  private static float currentSpeedModifier;
+  private static float currentHealthModifier;
+  private static float currentDamageModifier;
 
   [HarmonyPostfix]
   [HarmonyPatch(typeof(OptionsManager), "Update")]
@@ -46,15 +58,22 @@ public static class Patches {
     bool radiance = RadianceConfig.radianceToggle.Value;
     float tier = RadianceConfig.radianceTier;
     bool visualsOnly = RadianceConfig.visualsOnly.Value;
+    float speedModifier = RadianceConfig.speedModifier;
+    float healthModifier = RadianceConfig.healthModifier;
+    float damageModifier = RadianceConfig.damageModifier;
 
     if (radiance == OptionsManager.forceRadiance &&
         tier == OptionsManager.radianceTier &&
-        visualsOnly == currentVisualsOnly) return;
+        visualsOnly == currentVisualsOnly &&
+        speedModifier == currentSpeedModifier &&
+        healthModifier == currentHealthModifier &&
+        damageModifier == currentDamageModifier) return;
 
-    SetRadiance(radiance, tier, visualsOnly);
+    SetRadiance(radiance, tier, visualsOnly, speedModifier, healthModifier, damageModifier);
   }
 
-  private static void SetRadiance(bool radiance, float tier, bool visualsOnly) {
+  private static void SetRadiance(bool radiance, float tier, bool visualsOnly, 
+                                  float speedModifier, float healthModifier, float damageModifier) {
     if (radiance) {
       MonoSingleton<AssistController>.Instance.cheatsEnabled = true;
     }
@@ -64,6 +83,9 @@ public static class Patches {
       OptionsManager.radianceTier = tier;
     }
     currentVisualsOnly = visualsOnly;
+    currentSpeedModifier = speedModifier;
+    currentHealthModifier = healthModifier;
+    currentDamageModifier = damageModifier;
 
     foreach(EnemyIdentifier enemy in Object.FindObjectsOfType<EnemyIdentifier>()) {
       enemy.UpdateBuffs();
@@ -83,8 +105,7 @@ public static class Patches {
       float num;
       if (OptionsManager.forceRadiance) {
         num = Mathf.Max(OptionsManager.radianceTier, enemy.radianceTier);
-      }
-      else {
+      } else {
         num = enemy.radianceTier;
       }
 
@@ -96,6 +117,12 @@ public static class Patches {
       }
       if (enemy.damageBuff || OptionsManager.forceRadiance) {
         enemy.totalDamageModifier *= enemy.damageBuffModifier;
+      }
+
+      if (OptionsManager.forceRadiance) {
+        enemy.totalSpeedModifier *= currentSpeedModifier;
+        enemy.totalHealthModifier *= currentHealthModifier;
+        enemy.totalDamageModifier *= currentDamageModifier;
       }
     }
 
