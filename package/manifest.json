@@ -1,6 +1,6 @@
 {
     "name": "Radiance_Enabler",
-    "version_number": "1.0.2",
+    "version_number": "1.0.3",
     "website_url": "https://github.com/earthlingOnFire/Radiance-Enabler",
     "description": "Makes it easier to enable radiance.",
     "dependencies": [

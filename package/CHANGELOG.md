@@ -1,4 +1,10 @@
 <details>
+<summary>Changelog 1.0.3</summary>
+
+- Added "Ignore Radiance Tier" toggle.
+- Fixed a bug that made radiant enemies in the cybergrind immortal.
+</details>
+<details>
 <summary>Changelog 1.0.2</summary>
 
 - Added health, speed and damage modifiers.
