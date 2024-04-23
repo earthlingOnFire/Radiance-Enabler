@@ -11,11 +11,12 @@ namespace RadianceEnabler;
 public class Plugin : BaseUnityPlugin {	
   public const string PLUGIN_GUID = "com.earthlingOnFire.RadianceEnabler";
   public const string PLUGIN_NAME = "Radiance Enabler";
-  public const string PLUGIN_VERSION = "1.0.3";
+  public const string PLUGIN_VERSION = "1.0.4";
 
   private ConfigBuilder config;
 
   private void Awake() {
+    gameObject.hideFlags = HideFlags.HideAndDontSave;
     config = new ConfigBuilder(PLUGIN_GUID, PLUGIN_NAME);
     config.BuildAll();
   }
@@ -85,9 +86,7 @@ public static class Patches {
     }
 
     OptionsManager.forceRadiance = radiance;
-    if (radiance) {
-      OptionsManager.radianceTier = tier;
-    }
+    OptionsManager.radianceTier = tier;
     currentVisualsOnly = visualsOnly;
     currentIgnoreTier = ignoreTier;
     currentSpeedModifier = speedModifier;

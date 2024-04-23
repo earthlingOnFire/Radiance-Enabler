@@ -1,4 +1,10 @@
 <details>
+<summary>Changelog 1.0.4</summary>
+
+- Updated for patch 15.
+</details>
+<details>
+<details>
 <summary>Changelog 1.0.3</summary>
 
 - Added "Ignore Radiance Tier" toggle.
