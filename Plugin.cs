@@ -11,7 +11,7 @@ namespace RadianceEnabler;
 public class Plugin : BaseUnityPlugin {	
   public const string PLUGIN_GUID = "com.earthlingOnFire.RadianceEnabler";
   public const string PLUGIN_NAME = "Radiance Enabler";
-  public const string PLUGIN_VERSION = "1.0.4";
+  public const string PLUGIN_VERSION = "1.0.5";
 
   private ConfigBuilder config;
 
